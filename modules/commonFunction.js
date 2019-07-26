@@ -212,7 +212,7 @@ commonFunction.returnMainPage = function (mainPageId) {
 commonFunction.ifMainPage = function (mainPageId) {
     var i = 0;
     while (!textEndsWith(mainPageId).exists() && i <= 2) {
-        tLog("未进入主页" + i);
+        toastLog("未进入主页" + i);
         sleep(2000);
         i++;
     }
