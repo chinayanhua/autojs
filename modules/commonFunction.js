@@ -155,17 +155,19 @@ commonFunction.enterMainPage = function (appName, waitTime, mainPageFlag) {
     if (textEndsWith("跳过").exists()) {
         textEndsWith("跳过").findOne().click();
     }
-    for (let index = 0; index < 5; index++) {
-        if (!textEndsWith(mainPageFlag).exists()) {
-            toastLog("不存在" + mainPageFlag + index);
-            sleep(1000);
-        } else {
-            break;
+    if(mainPageFlag != null){
+        for (let index = 0; index < 5; index++) {
+            if (!textEndsWith(mainPageFlag).exists()) {
+                toastLog("不存在" + mainPageFlag + index);
+                sleep(1000);
+            } else {
+                break;
+            }
         }
-    }
-    if (!textEndsWith(mainPageFlag).exists()) {
-        toastLog("一直未进入主页，退出脚本!");
-        exit();
+        if (!textEndsWith(mainPageFlag).exists()) {
+            toastLog("一直未进入主页，退出脚本!");
+            exit();
+        }
     }
     //打开后有消息推送提醒，关闭
     if (textEndsWith("开启消息推送").exists()) {
