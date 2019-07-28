@@ -7,6 +7,7 @@ var module_qutoutiao = require('qutoutiao.js');
 var module_shuabaoduanshipin = require('shuabaoduanshipin.js');
 var module_souhuzixun = require('souhuzixun.js');
 var module_huitoutiao = require('huitoutiao.js');
+var module_jukandian = require('jukandian.js');
 
 //============================== 全局变量=======================================
 
@@ -17,8 +18,11 @@ var appName_qutoutiao = "趣头条";
 var appName_huitoutiao = "惠头条";
 var appName_souhuzixun = "搜狐资讯";
 var appName_shuabaoduanshipin = "刷宝短视频";
+var appName_jukandian = "聚看点";
 //可以选择的模块
-var appNameOptions = [appName_zhifubao, appName_shandianhezi, appName_qutoutiao, appName_souhuzixun, appName_shuabaoduanshipin, appName_huitoutiao];
+var appNameOptions = [appName_zhifubao, appName_shandianhezi, appName_qutoutiao, 
+                    appName_souhuzixun, appName_shuabaoduanshipin, appName_huitoutiao, 
+                    appName_jukandian];
 //打开软件等待时间，单位秒
 var waitTime = 5;
 
@@ -66,5 +70,9 @@ function mainEntrence() {
         //惠头条
         commonFunction.enterMainPage(appName, waitTime, mainPageId_mine);
         module_huitoutiao.start(commonFunction, mainPageId_mine);
+    }else if (appName == appName_jukandian) {
+        //聚看点
+        commonFunction.enterMainPage(appName, waitTime, mainPageId_mine);
+        module_jukandian.start(commonFunction, mainPageId_mine);
     }
 }
