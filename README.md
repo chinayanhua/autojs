@@ -21,10 +21,15 @@ auto.js开发的各种自动化脚本
 
         支付宝-zhifubao.js：蚂蚁森林
 
-        趣头条-qutoutiao.js：首页，视频，短视频
+        趣头条-qutoutiao.js：首页，视频，短视频。亲测会封号
 
         搜狐资讯-souhuzixun.js：首页，视频
 
         闪电盒子-shandianhezi.js：首页，短视频，逛逛金币
 
         刷宝短视频-shuabaoduanshipin.js：短视频
+        
+        惠头条-huitoutiao:首页，视频，小视频
+        
+        聚看点-jukandian：首页，视频
+        
