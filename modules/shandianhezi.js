@@ -54,7 +54,7 @@ function scanFirstPage() {
         alert("请手动点击首页按钮，进入文章区！");
         sleep(2000);
         scanFirstPage();
-    }else{
+    } else {
         textEndsWith(firstPage_option).findOne().click();
         toastLog("点击了首页");
     }
@@ -109,7 +109,7 @@ function scanLittleVedio() {
     while (true) {
         var randomNum = random(5, 10);
         sleep(randomNum * 1000);
-        toast("sleep:" + randomNum + ", 滑动次数:" + swipeCount);
+        toastLog("sleep:" + randomNum + ", 滑动次数:" + swipeCount);
         gesture(1500, [random(300, 600), 1600], [random(300, 600), 200])
         swipeCount++;
 
@@ -187,24 +187,28 @@ function scanGoods() {
                 //点击进入某一个商品详情页
                 var posb = pos.bounds();
                 log("posb.centerX():" + posb.centerX() + ",posb.centerY():" + posb.centerY());
-                click(posb.centerX(), posb.centerY());
-                toastLog("点击了" + rmb_price);
-                sleep(2000);
-                //点击商品的 不喜欢 
-                if (textEndsWith(notLikeId).exists()) {
-                    textEndsWith(notLikeId).find().forEach(function (pos) {
-                        var posb = pos.bounds();
-                        log("posb.centerX():" + posb.centerX() + ",posb.centerY():" + posb.centerY());
-                        click(posb.centerX(), posb.centerY());
-                        toastLog("点击了" + notLikeId);
-                    });
-                    //在商品详情页滑动
-                    for (var i = 1; i < 6; i++) {
-                        gesture(1000, [random(300, 600), 1000], [random(300, 500), randomNum]);
-                        sleep(2000);
+                if (posb.centerX() < 0 || posb.centerY() < 400 || posb.centerY() > 1800) {
+                    toastLog("坐标点为负，点击会报错，跳过本条");
+                } else {
+                    click(posb.centerX(), posb.centerY());
+                    toastLog("点击了" + rmb_price);
+                    sleep(2000);
+                    //点击商品的 不喜欢 
+                    if (textEndsWith(notLikeId).exists()) {
+                        textEndsWith(notLikeId).find().forEach(function (pos) {
+                            var posb = pos.bounds();
+                            log("posb.centerX():" + posb.centerX() + ",posb.centerY():" + posb.centerY());
+                            click(posb.centerX(), posb.centerY());
+                            toastLog("点击了" + notLikeId);
+                        });
+                        //在商品详情页滑动
+                        for (var i = 1; i < 6; i++) {
+                            gesture(1000, [random(300, 600), 1000], [random(300, 500), randomNum]);
+                            sleep(2000);
+                        }
                     }
+                    back();
                 }
-                back();
             });
         }
     }
