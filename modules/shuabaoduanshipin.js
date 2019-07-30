@@ -8,16 +8,20 @@ var module_shuabaoduanshipin = {};
 //=========================刷宝短视频==========================
 var likeId = "image_view"; //点赞id
 var focusId = "关注";
+var tipShowId = "btn_view";//金币到账通知id
 
 module_shuabaoduanshipin.start = function (common) {
     commonFunction = common;
     var swipeCount = 1;
     while (true) {
+        if(id(tipShowId).exists()){
+            id(tipShowId).findOne().click();
+        }
         //随机滑动
         var randomNum = random(5, 15);
         sleep(randomNum * 1000);
         toast("sleep:" + randomNum + ", swipeCount:" + swipeCount);
-        //随机点赞
+        //随机点赞和关注
         if (randomNum == 5 || randomNum == 10 || randomNum == 15) {
             clickLike();
             clickFocus();
