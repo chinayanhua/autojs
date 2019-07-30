@@ -153,9 +153,10 @@ commonFunction.enterMainPage = function (appName, waitTime, mainPageFlag) {
     sleep(waitTime * 1000);
     //如果有广告，跳过
     if (textEndsWith("跳过").exists()) {
+        toastLog("广告，点击跳过！");
         textEndsWith("跳过").findOne().click();
     }
-    if(mainPageFlag != null){
+    if (mainPageFlag != null) {
         for (let index = 0; index < 5; index++) {
             if (!textEndsWith(mainPageFlag).exists()) {
                 toastLog("不存在" + mainPageFlag + index);
@@ -199,12 +200,12 @@ commonFunction.shutdownApp = function (appName) {
 //退回主页
 commonFunction.returnMainPage = function (mainPageId) {
     for (var i = 1; i < 4; i++) {
-        log("退回次数" + i);
+        toastLog("退回次数" + i);
         back();
         sleep(2000);
         var mainResult = commonFunction.ifMainPage(mainPageId);
         if (mainResult) {
-            log("已退回到主页");
+            toastLog("已退回到主页");
             return;
         }
     }
@@ -220,11 +221,22 @@ commonFunction.ifMainPage = function (mainPageId) {
     }
     if (!textEndsWith(mainPageId).exists()) {
         return false;
-
     }
     return true;
 }
 
+
+//判断计时器是否存在
+commonFunction.ifTimerExists = function (timers) {
+    var exists_timer = false;
+    for (let index = 0; index < timers.length; index++) {
+        if (id(timers[index]).exists()) {
+            exists_timer = true;
+            break;
+        }
+    }
+    return exists_timer;
+}
 
 
 //=====================================enterMainPage end===================================

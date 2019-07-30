@@ -1,39 +1,21 @@
 var commonFunction;
-var module_jukandian = {};
+var module_zhongqingkandian = {};
 //主页标识
 var mainPageId;
-
 //选择要启动的模块
-var firstPage_option = "看点"; //首页文章区
+var firstPage_option = "首页"; //首页文章区
 var video_option = "视频";
 var options = [firstPage_option, video_option];  //可以选择的模块
-
 //文章定位点
-var searchKey = "item_artical_three_read_num";
-
+var searchKey = "a2e";
 //文章金币计时器id
-//收藏按钮id
-var commentCollectId = "tv_web_comment_hint";
-var commentCollectId_v2 = "v2_video_detail_bottom_comment_collect";
-//评论层id
-var commentLayoutId = "ll_web_write_comment_layout";
-var commentLayoutId_v2 = "v2_video_detail_bottom_comment_write_layout";
-// 评论文字id 
-var commentTextId = "tv_web_comment_hint";
-var commentTextId_v2 = "v2_video_detail_bottom_comment_write_text";
-//分享id
-var commentShareId = "ll_share_layout";
-var commentShareId_v2 = "v2_video_detail_bottom_comment_share";
-//集合
-var timers = [commentCollectId, commentLayoutId, commentTextId, commentShareId,
-            commentCollectId_v2, commentLayoutId_v2, commentTextId_v2, commentShareId_v2];
-
-
+var articleId = "jt"; //评论
 //视频按钮id
-var videoButton = "item_video_play";
+var videoButton = "a28";
+var timer = articleId;
 
 //==============================程序启动区=======================================
-module_jukandian.start = function (commonFunctionParam, mainPageFlag) {
+module_zhongqingkandian.start = function (commonFunctionParam, mainPageFlag) {
     commonFunction = commonFunctionParam;
     mainPageId = mainPageFlag;
     //选择模块
@@ -58,6 +40,7 @@ function selectModule() {
     }
 }
 
+
 //=====================================scanArticle start===================================
 //浏览文章
 function scanArticle() {
@@ -66,7 +49,8 @@ function scanArticle() {
         textEndsWith(firstPage_option).findOne().click();
     }
     if (!textEndsWith(firstPage_option).exists()) {
-        alert("请手动点击按钮！");
+        toastLog("文章区识别失败，请手动进入");
+        alert("请手动点击头条按钮，进入文章区！");
         sleep(3000);
     }
     toastLog("进入文章区");
@@ -92,14 +76,15 @@ function selectArticle() {
     id(searchKey).find().forEach(function (pos) {
         var posb = pos.bounds();
         if (posb.centerX() < 0 || posb.centerY() < 400 || posb.centerY() > 1800) {
-            toastLog("坐标点为负，点击会报错，跳过本条");
+            //如果坐标点为负，点击会报错，跳过本条
+            // swipe(500, 1300, 500, 200, 2000);
         } else {
             log("该条新闻中心坐标：centerX:" + posb.centerX() + ",centerY:" + posb.centerY());
             click(posb.centerX(), (posb.centerY() - 50));
             toastLog("点击了文章，准备进入文章！");
             for (var limitCount = 1; limitCount < 4; limitCount++) {
                 sleep(1000);
-                if (commonFunction.ifTimerExists(timers)) {
+                if (id(timer).exists()) {
                     break;
                 } else {
                     toastLog("进入次数:" + limitCount);
@@ -115,29 +100,26 @@ function selectArticle() {
 
 //文章里阅读循环
 function scanSingleArticle() {
-    if(id("dismisstv").exists()){
-        id("dismisstv").findOne().click();
-    }
-    if (commonFunction.ifTimerExists(timers)) {
+    if (id(timer).exists()) {
         toastLog(">>>>>>>>>>>金币阅读计时圈存在，开始浏览文章<<<<<<<<<");
         var scanTime = 10;
         for (var i = 0; i < scanTime; i++) {
             toastLog("浏览文章" + i);
             swipe(500, 1000, 500, 500, 1000);//下滑
-            sleep(random(2, 5) * 1000);
+            sleep(random(3, 6) * 1000);
         }
         toastLog(">>>>>>>>>>浏览文章结束<<<<<<<<<<<<");
         //退回主页
-        commonFunction.returnMainPage(mainPageId);
-    } else{
+        back();
+    } else if (!id(timer).exists()) {
         toastLog("金币阅读计时圈不存在，退出");
         //退回主页
-        commonFunction.returnMainPage(mainPageId);
+        back();
     }
 }
 
 //=====================================scanVideo===================================
-
+//浏览视频
 function scanVideo() {
     if (!textEndsWith(video_option).exists()) {
         toastLog("自动识别视频失败，请手动进入！");
@@ -148,10 +130,6 @@ function scanVideo() {
         textEndsWith(video_option).findOne().click();
         sleep(2000);
     }
-    if (!id(videoButton).exists()) {
-        alert("请手动点视频按钮！");
-        sleep(3000);
-    }
     //开始浏览视频
     while (true) {
         if (id(videoButton).exists()) {
@@ -159,10 +137,10 @@ function scanVideo() {
                 var posb = pos.bounds();
                 if (posb.centerX() < 0 || posb.centerY() < 400 || posb.centerY() > 1800) {
                     //如果坐标点为负，点击会报错，跳过本条
-                    log("坐标点为负，滑动");
+                    toastLog("如果坐标点为负，点击会报错，跳过本条");
                 } else {
                     log("该条新闻中心坐标：centerX:" + posb.centerX() + ",centerY:" + posb.centerY());
-                    click(posb.centerX(), posb.centerY());
+                    click(posb.centerX(), (posb.centerY() - 50));
                     toastLog("点击播放按钮！");
                     sleep(2000);
                     scanSingleArticle();
@@ -176,6 +154,5 @@ function scanVideo() {
     }
 }
 
-
 //=====================================end===================================
-module.exports = module_jukandian;
+module.exports = module_zhongqingkandian;
