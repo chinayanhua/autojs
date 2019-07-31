@@ -14,6 +14,9 @@ var articleId = "coin_img_big";
 var videoButton = "video_item_play_btn";
 var timer = articleId;
 
+//金币提醒  more_minute_btn
+var moreMinuteBtnText = "我知道了";
+
 //==============================程序启动区=======================================
 module_xiangkan.start = function (commonFunctionParam, mainPageFlag) {
     commonFunction = commonFunctionParam;
@@ -73,6 +76,9 @@ function selectArticle() {
     toastLog("文章存在");
     //遍历点击文章
     id(searchKey).find().forEach(function (pos) {
+        if(textEndsWith(moreMinuteBtnText).exists()){
+            textEndsWith(moreMinuteBtnText).findOne().click();
+        }
         var posb = pos.bounds();
         if (posb.centerX() < 0 || posb.centerY() < 400 || posb.centerY() > 1800) {
             toastLog("坐标为负!");
@@ -98,6 +104,9 @@ function selectArticle() {
 
 //文章里阅读循环
 function scanSingleArticle() {
+    if(textEndsWith(moreMinuteBtnText).exists()){
+        textEndsWith(moreMinuteBtnText).findOne().click();
+    }
     if (id(timer).exists()) {
         toastLog(">>>>>>>>>>>金币阅读计时圈存在，开始浏览文章<<<<<<<<<");
         var scanTime = 10;
