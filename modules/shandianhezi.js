@@ -11,6 +11,11 @@ var littleVideo_option = "短视频";  //短视频
 var goods_option = "逛逛领币"; //逛逛领币
 var options = [firstPage_option, littleVideo_option, goods_option];  //可以选择的模块
 
+//文章计时标记id
+var articleFlagId = "title"; //文章来源id = title  新闻标题news-title  来源id = src-data-new  发布时间id = news-pubtime
+//视频标记
+var videoFlagId = "video_title";
+
 //进入短视频页面的flag
 var littleVideoEnterFlag = "user_nick_name";
 
@@ -64,26 +69,26 @@ function scanFirstPage() {
         click(500, 1000);
         toastLog("点击了文章！");
         sleep(2000);
-        //如果进入了广告页，退出
-        var articleFlag = "share_icon";
-        if (!id(articleFlag).exists()) {
-            toastLog("不存在分享按钮，不是文章，退出!");
+        if ((id(articleFlagId).exists() || id(videoFlagId).exists()) && !textEndsWith("我的").exists()) {
+            toastLog("存在文章标记");
+            for (var i = 0; i < 10; i++) {
+                toastLog("阅读文章中......" + i);
+                swipe(500, 1000, 200, 500, 2000);
+            }
             back();
             sleep(1000);
-            //检查是否回到主页
+        } else {
+            toastLog("不存在文章标记id，退出!");
+            back();
+            sleep(1000);
             if (!textEndsWith(mainPageId).exists() & textEndsWith("拒绝").exists()) {
                 toastLog("让下载软件，拒绝！");
                 textEndsWith("拒绝").findOne().click();
             }
+            //检查是否回到主页
             ifMainPage();
             continue;
         }
-        for (var i = 0; i < 10; i++) {
-            toastLog("阅读文章中......" + i);
-            swipe(500, 1000, 200, 500, 2000);
-        }
-        back();
-        sleep(1000);
     }
 }
 

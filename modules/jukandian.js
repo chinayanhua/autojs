@@ -81,15 +81,33 @@ function scanArticle() {
 
 //选择某一篇文章
 function selectArticle() {
+
+    if(id("dismisstv").exists()){
+        id("dismisstv").findOne().click();
+    }
+    if(textEndsWith("忽略").exists()){
+        textEndsWith("忽略").findOne().click();
+    }
+
+
     //判断当页是否存在可以点击的文章
     if (!id(searchKey).exists()) {
         toastLog("文章不存在，滑动");
         swipe(500, 1300, 500, 200, 2000);
         return;
     }
+
     toastLog("文章存在");
     //遍历点击文章
     id(searchKey).find().forEach(function (pos) {
+
+        if(id("dismisstv").exists()){
+            id("dismisstv").findOne().click();
+        }
+        if(textEndsWith("忽略").exists()){
+            textEndsWith("忽略").findOne().click();
+        }
+
         var posb = pos.bounds();
         if (posb.centerX() < 0 || posb.centerY() < 400 || posb.centerY() > 1800) {
             toastLog("坐标点为负，点击会报错，跳过本条");
@@ -115,14 +133,34 @@ function selectArticle() {
 
 //文章里阅读循环
 function scanSingleArticle() {
+
+
     if(id("dismisstv").exists()){
         id("dismisstv").findOne().click();
     }
+    if(textEndsWith("忽略").exists()){
+        textEndsWith("忽略").findOne().click();
+    }
+
     if (commonFunction.ifTimerExists(timers)) {
         toastLog(">>>>>>>>>>>金币阅读计时圈存在，开始浏览文章<<<<<<<<<");
         var scanTime = 10;
         for (var i = 0; i < scanTime; i++) {
             toastLog("浏览文章" + i);
+            //如果有福利金币，领取
+            if(textEndsWith("领金币").exists()){
+                toastLog("奖励金币存在，点击领取！");
+                textEndsWith("领金币").find().forEach(function (pos) {
+                    var posb = pos.bounds();
+                    log("posb.centerX():" + posb.centerX() + ",posb.centerY():" + posb.centerY());
+                    click(700, (posb.centerY()+80));
+                    toastLog("点击了福袋，领取金币");
+                    sleep(1000);
+                    if(textEndsWith("继续阅读").exists()){
+                        textEndsWith("继续阅读").findOne().click();
+                    }
+                });
+            }
             swipe(500, 1000, 500, 500, 1000);//下滑
             sleep(random(2, 5) * 1000);
         }
