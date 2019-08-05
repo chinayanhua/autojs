@@ -60,22 +60,6 @@ function selectArticle() {
     }
     //2.选择文章
     id(searchKey_articleTime).find().forEach(function (pos) {
-        //判断是否有能量红包
-        if (id("energy_open").exists()) {
-            log("energy_open exists");
-            id("energy_open").findOne().click();
-            sleep(1000);
-            back();
-        }
-        //红包点击
-        if (id("red_bag").exists()) {
-            id("red_bag").findOne().click();
-            id("redbag_open").findOne().click();
-            back();
-            sleep(500);
-            back();
-        }
-
         var posb = pos.bounds();
         if (posb.centerX() < 0 || posb.centerY() < 400 || posb.centerY() > 1800) {
             //如果坐标点为负，点击会报错，跳过本条
