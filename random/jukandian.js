@@ -22,6 +22,7 @@ function selectArticle() {
     if (!id(searchKey).exists()) {
         toastLog("文章不存在，滑动");
         swipe(device.width / 2, device.height / 4 * 3, device.width / 2, device.height / 4, 2000);//下滑
+        clickAwardBtn();
         return;
     }
     //遍历点击文章
@@ -35,6 +36,7 @@ function selectArticle() {
         }
         var posb = pos.bounds();
         if (posb.centerX() > 0 && posb.centerX() < 1000 && posb.centerY() > 400 && posb.centerY() < 1800) {
+            clickAwardBtn();
             log("该条新闻中心坐标：centerX:" + posb.centerX() + ",centerY:" + posb.centerY());
             click(posb.centerX(), posb.centerY());
             toastLog("点击了文章，准备进入文章！");
@@ -55,7 +57,7 @@ function scanSingleArticle() {
         toastLog("浏览文章" + i);
         clickAwardBtn();
         swipe(device.width / 2, device.height / 2, device.width / 2, device.height / 4, 2000);//下滑
-        sleep(random(2, 5) * 1000);
+        sleep(random(2, 4) * 1000);
     }
     toastLog(">>>>>>>>>>浏览文章结束<<<<<<<<<<<<");
     back();
@@ -65,7 +67,6 @@ function scanSingleArticle() {
 function clickAwardBtn() {
     //如果有福利金币，领取
     if (textEndsWith("领金币").exists()) {
-        toastLog("当页奖励金币存在");
         textEndsWith("领金币").find().forEach(function (pos) {
             var posb = pos.bounds();
             // log("posb.centerX():" + posb.centerX() + ",posb.centerY():" + posb.centerY());
@@ -78,6 +79,12 @@ function clickAwardBtn() {
     }
     if (textEndsWith("继续阅读").exists()) {
         textEndsWith("继续阅读").findOne().click();
+    }
+    if (textEndsWith("继续赚钱").exists()) {
+        textEndsWith("继续赚钱").findOne().click();
+    }
+    if (id("cancel_quit").exists()) {
+        id("cancel_quit").findOne().click();
     }
 }
 

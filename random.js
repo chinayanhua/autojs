@@ -9,7 +9,7 @@ var module_huitoutiao = require('random/huitoutiao.js');
 var module_jukandian = require('random/jukandian.js');
 var module_xiangkan = require('random/xiangkan.js');
 var module_weili = require('random/weili.js');
-// var module_zhongqingkandian = require('random/zhongqingkandian.js');
+var module_zhongqingkandian = require('random/zhongqingkandian.js');
 
 //============================== 全局变量=======================================
 
@@ -21,13 +21,14 @@ var appName_shuabaoduanshipin = "刷宝短视频";
 var appName_jukandian = "聚看点";
 var appName_xiangkan = "想看";
 var appName_weili = "微鲤";
-// var appName_zhongqingkandian = "中青看点";
+var appName_zhongqingkandian = "中青看点";
 
 var appNameArray = [appName_xiangkan, appName_weili, appName_shandianhezi, appName_shuabaoduanshipin,
-                     appName_jukandian,appName_huitoutiao,appName_souhuzixun];
+                     appName_jukandian,appName_huitoutiao,appName_souhuzixun,appName_zhongqingkandian];
 var moduleNameArray = [module_xiangkan, module_weili, module_shandianhezi, module_shuabaoduanshipin,
-                         module_jukandian,module_huitoutiao,module_souhuzixun];
+                         module_jukandian,module_huitoutiao,module_souhuzixun,module_zhongqingkandian];
 
+                         
 //打开软件等待时间，单位秒
 var waitTime = 15;
 //多少分钟换一次app
@@ -39,7 +40,7 @@ while (true) {
 }
 //==============================程序主要步骤=======================================
 function mainEntrence() {
-    var randomNum = random(0, 6);
+    var randomNum = random(0, (appNameArray.length-1));
     toastLog("randomNum:" + randomNum);
     commonFunction.enterMainPage(appNameArray[randomNum], waitTime);
     var startTime = new Date().getMinutes();

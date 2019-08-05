@@ -17,10 +17,10 @@ module_shuabaoduanshipin.start = function () {
     sleep(randomNum * 1000);
     toast("sleep:" + randomNum + ", swipeCount:" + swipeCount);
     //随机点赞和关注
-    if (randomNum == 5 || randomNum == 10 || randomNum == 15) {
-        clickLike();
-        clickFocus();
-    }
+    // if (randomNum == 5 || randomNum == 10 || randomNum == 15) {
+    //     clickLike();
+    //     clickFocus();
+    // }
     gesture(1500, [random(300, 600), 1600], [random(300, 600), 200])
     swipeCount++;
 }

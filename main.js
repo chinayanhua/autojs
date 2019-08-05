@@ -1,16 +1,16 @@
 
 //引入外部文件
-var commonFunction = require('commonFunction.js');
-var module_shandianhezi = require('shandianhezi.js');
-var module_zhifubao = require('zhifubao.js');
-var module_qutoutiao = require('qutoutiao.js');
-var module_shuabaoduanshipin = require('shuabaoduanshipin.js');
-var module_souhuzixun = require('souhuzixun.js');
-var module_huitoutiao = require('huitoutiao.js');
-var module_jukandian = require('jukandian.js');
-var module_xiangkan = require('xiangkan.js');
-var module_weili = require('weili.js');
-var module_zhongqingkandian = require('zhongqingkandian.js');
+var commonFunction = require('modules/commonFunction.js');
+var module_shandianhezi = require('modules/shandianhezi.js');
+var module_zhifubao = require('modules/zhifubao.js');
+var module_qutoutiao = require('modules/qutoutiao.js');
+var module_shuabaoduanshipin = require('modules/shuabaoduanshipin.js');
+var module_souhuzixun = require('modules/souhuzixun.js');
+var module_huitoutiao = require('modules/huitoutiao.js');
+var module_jukandian = require('modules/jukandian.js');
+var module_xiangkan = require('modules/xiangkan.js');
+var module_weili = require('modules/weili.js');
+var module_zhongqingkandian = require('modules/zhongqingkandian.js');
 
 //============================== 全局变量=======================================
 
@@ -90,6 +90,6 @@ function mainEntrence() {
     }else if (appName == appName_zhongqingkandian) {
         //中青看点
         commonFunction.enterMainPage(appName, waitTime, mainPageId_recommend);
-        module_zhongqingkandian.start(commonFunction, mainPageId_recommend);
+        module_zhongqingkandian.start();
     }
 }

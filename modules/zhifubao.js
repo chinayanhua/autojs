@@ -7,7 +7,7 @@ var module_zhifubao = {};
 //==============================全局变量=======================================
 
 var myEnergeType = ["地铁出行", "线下支付", "行走", "共享单车", "地铁购票", "网络购票", "网购火车票", "生活缴费", "ETC缴费", "电子发票", "绿色办公", "咸鱼交易", "预约挂号"];
-var handimg = images.read("/storage/emulated/0/1/handPic.bmp");
+var handimg = images.read("./modules/handPic.bmp");  //./modules/handPic.bmp     /storage/emulated/0/1/handPic.bmp
 
 
 //==============================程序启动区=======================================
