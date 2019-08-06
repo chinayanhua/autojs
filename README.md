@@ -34,15 +34,15 @@ main.js：选择app，选择app里的功能
 
         刷宝短视频-shuabaoduanshipin.js：短视频
         
-        惠头条-huitoutiao:首页，视频，小视频
+        惠头条-huitoutiao.js:首页，视频，小视频
         
-        聚看点-jukandian：首页，视频
+        聚看点-jukandian.js：首页，视频
         
-        微鲤-weili：首页，视频
+        微鲤-weili.js：首页，视频
         
-        想看-xiangkan：首页
+        想看-xiangkan.js：首页
         
-        中青看点-zhongqingkandian：首页
+        中青看点-zhongqingkandian.js：首页
         
         
 ==================================================================
@@ -71,15 +71,15 @@ random.js：随机选择app进行刷币
 
         刷宝短视频-shuabaoduanshipin.js：短视频
         
-        惠头条-huitoutiao:首页
+        惠头条-huitoutiao.js:首页
         
-        聚看点-jukandian：首页
+        聚看点-jukandian.js：首页
         
-        微鲤-weili：首页
+        微鲤-weili.js：首页
         
-        想看-xiangkan：首页
+        想看-xiangkan.js：首页
         
-        中青看点-zhongqingkandian：首页
+        中青看点-zhongqingkandian.js：首页
         
         
         
