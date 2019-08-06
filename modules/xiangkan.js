@@ -15,11 +15,15 @@ var scanTimes = 10;
 
 
 //文章金币计时器id
-var articleId = "coin_img_big";
+var coin_img_Id = "coin_img_big";
 //视频按钮id
 var videoButton = "video_item_play_btn";
-var timer = articleId;
 
+//福袋icon id
+var fudai_icon_id = "fudai_icon";
+//首页领金币按钮
+var fudai_btn_id = "rec_task_btn";
+var fudai_btn_text = "领金币";
 
 //更多时间提醒
 var more_minute_btn_id = "more_minute_btn";
@@ -79,6 +83,7 @@ function selectArticle() {
     toastLog(">>>>>>>>>>>当页开始<<<<<<<<<");
     textEndsWith(searchKey).find().forEach(function (pos) {
         clickMoreMinuteBtn();
+        sleep(1000);
         var posb = pos.bounds();
         if (posb.centerX() > 0 && posb.centerX() < 1000 && posb.centerY() > 400 && posb.centerY() < 1800) {
             log("该条新闻中心坐标：centerX:" + posb.centerX() + ",centerY:" + posb.centerY());
@@ -109,11 +114,37 @@ function scanSingleArticle() {
 }
 
 
-function clickMoreMinuteBtn(){
-    if(id(more_minute_btn_id).exists()){
+function clickMoreMinuteBtn() {
+    if (id(more_minute_btn_id).exists()) {
+        log(more_minute_btn_id + " exists");
         id(more_minute_btn_id).findOne().click();
     }
+    if (id(fudai_icon_id).exists()) {
+        log(fudai_icon_id + " exists");
+        id(fudai_icon_id).find().forEach(function (pos) {
+            var posb = pos.bounds();
+            if (posb.centerX() > 0 && posb.centerX() < 1000 && posb.centerY() > 400 && posb.centerY() < 1800) {
+                log("点击"+fudai_icon_id);
+                click(posb.centerX(), posb.centerY());
+            }
+        });
+    }
+    if (id(fudai_btn_id).exists()) {
+        log(fudai_btn_id + " exists");
+        id(fudai_btn_id).find().forEach(function (pos) {
+            var posb = pos.bounds();
+            if (posb.centerX() > 0 && posb.centerX() < 1000 && posb.centerY() > 400 && posb.centerY() < 1800) {
+                log("点击"+fudai_btn_id);
+                click(posb.centerX(), posb.centerY());
+            }
+        });
+    }
+    if (textEndsWith(fudai_btn_text).exists()) {
+        log(fudai_btn_text + " exists");
+        textEndsWith(fudai_btn_text).findOne().click();
+    }
 }
+
 
 //=====================================scanVideo===================================
 
