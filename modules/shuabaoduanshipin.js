@@ -6,25 +6,35 @@ var module_shuabaoduanshipin = {};
 var likeId = "image_view"; //点赞id
 var focusId = "关注";
 var tipShowId = "btn_view";//金币到账通知id
+var swipeCount = 1;
 
 module_shuabaoduanshipin.start = function () {
-    var swipeCount = 1;
     while (true) {
-        if(id(tipShowId).exists()){
-            id(tipShowId).findOne().click();
-        }
-        //随机滑动
-        var randomNum = random(5, 15);
-        sleep(randomNum * 1000);
-        toast("sleep:" + randomNum + ", swipeCount:" + swipeCount);
-        //随机点赞和关注
-        // if (randomNum == 5 || randomNum == 10 || randomNum == 15) {
-        //     clickLike();
-        //     clickFocus();
-        // }
-        gesture(1500, [random(300, 600), 1600], [random(300, 600), 200])
-        swipeCount++;
+        scanVideo();
     }
+}
+
+module_shuabaoduanshipin.start_random = function () {
+    scanVideo();
+}
+//===================================================================
+
+
+function scanVideo() {
+    if (id(tipShowId).exists()) {
+        id(tipShowId).findOne().click();
+    }
+    //随机滑动
+    var randomNum = random(5, 15);
+    sleep(randomNum * 1000);
+    toast("sleep:" + randomNum + ", swipeCount:" + swipeCount);
+    //随机点赞和关注
+    // if (randomNum == 5 || randomNum == 10 || randomNum == 15) {
+    //     clickLike();
+    //     clickFocus();
+    // }
+    gesture(1500, [random(300, 600), 1600], [random(300, 600), 200])
+    swipeCount++;
 }
 
 

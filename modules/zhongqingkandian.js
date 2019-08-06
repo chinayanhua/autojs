@@ -11,10 +11,18 @@ var timer = "jt"; //评论
 var scanTime = 10;
 //视频按钮id
 var videoButton = "a28";
+
+
+
 //==============================程序启动区=======================================
 module_zhongqingkandian.start = function () {
     //选择模块
     selectModule();
+}
+
+module_zhongqingkandian.start_random = function () {
+    //选择模块
+    selectArticle();
 }
 //=====================================selectModule start===================================
 //选择模块
@@ -81,7 +89,9 @@ function scanSingleArticle() {
             sleep(random(2, 5) * 1000);
         }
         toastLog(">>>>>>>>>>浏览文章结束<<<<<<<<<<<<");
-    } 
+    } else {
+        toastLog("金币阅读计时圈不存在，退出");
+    }
     //退回主页
     back();
 }

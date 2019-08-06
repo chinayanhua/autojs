@@ -1,23 +1,15 @@
-var commonFunction;
 var module_xiangkan = {};
-//主页标识
-var mainPageId;
 //选择要启动的模块
 var firstPage_option = "首页"; //首页文章区
 var video_option = "视频";
 var options = [firstPage_option, video_option];  //可以选择的模块
+
 //文章定位点
 var searchKey = "评论";
-
-
 //文章滑动次数
 var scanTimes = 10;
-
-
-//文章金币计时器id
-var coin_img_Id = "coin_img_big";
-//视频按钮id
-var videoButton = "video_item_play_btn";
+//更多时间提醒
+var more_minute_btn_id = "more_minute_btn";
 
 //福袋icon id
 var fudai_icon_id = "fudai_icon";
@@ -25,16 +17,21 @@ var fudai_icon_id = "fudai_icon";
 var fudai_btn_id = "rec_task_btn";
 var fudai_btn_text = "领金币";
 
-//更多时间提醒
-var more_minute_btn_id = "more_minute_btn";
+
+//文章金币计时器id
+var coin_img_Id = "coin_img_big";
+//视频按钮id
+var videoButton = "video_item_play_btn";
 
 //==============================程序启动区=======================================
-module_xiangkan.start = function (commonFunctionParam, mainPageFlag) {
-    commonFunction = commonFunctionParam;
-    mainPageId = mainPageFlag;
+module_xiangkan.start = function () {
     //选择模块
     selectModule();
 }
+module_xiangkan.start_random = function () {
+    selectArticle();
+}
+
 //=====================================selectModule start===================================
 //选择模块
 function selectModule() {

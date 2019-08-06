@@ -1,14 +1,7 @@
 
-//引入公共方法
-var commonFunction;
-
 var module_souhuzixun = {};
 
 //============================== 全局变量=======================================
-
-//主页标识
-var mainPageId;
-
 //选择要启动的模块
 var firstPage_option = "首页";
 var video_option = "视频";
@@ -16,7 +9,7 @@ var options = [firstPage_option, video_option];  //可以选择的模块
 
 //识别文章的定位点
 var searchKey_articleTime = "article_time";
-
+var scanTime= 10;
 //文章广告左上角x的坐标：x=70,y=125
 var adX = 70;
 var adY = 125;
@@ -26,10 +19,7 @@ var timerName = "counting_img";
 
 //==============================程序启动区=======================================
 //程序主入口
-module_souhuzixun.start = function (common, mainPageFlag) {
-    commonFunction = common;
-    mainPageId = mainPageFlag;
-
+module_souhuzixun.start = function () {
     //选择ui
     var indexOption = dialogs.select("请选择一个模块", options);
     //取消了选择
@@ -48,6 +38,10 @@ module_souhuzixun.start = function (common, mainPageFlag) {
     } 
 };
 
+module_souhuzixun.start_random = function () {
+    selectArticle();
+};
+
 //=====================================scanArticle start===================================
 
 //选择某一篇文章
@@ -55,87 +49,43 @@ function selectArticle() {
     if (!id(searchKey_articleTime).exists()) {
         //不存在，滑动
         log("当页不存在可点击的文章，滑动");
-        swipe(500, 1500, 500, 500, 2000);
+        swipe(device.width / 2, device.height / 4 * 3, device.width / 2, device.height / 4, 2000);//下滑
         return;
     }
     //2.选择文章
     id(searchKey_articleTime).find().forEach(function (pos) {
         var posb = pos.bounds();
-        if (posb.centerX() < 0 || posb.centerY() < 400 || posb.centerY() > 1800) {
-            //如果坐标点为负，点击会报错，跳过本条
-            log("坐标点为负");
-            // swipe(500, 1500, 500, 500, 2000);
-        } else {
+        if (posb.centerX() > 0 && posb.centerX() < 1000 && posb.centerY() > 400 && posb.centerY() < 1800) {
             log("该条新闻中心坐标：centerX:" + posb.centerX() + ",centerY:" + posb.centerY());
-            click(posb.centerX(), (posb.centerY()-50));
+            click(posb.centerX(), posb.centerY());
             toastLog("点击进入！");
             sleep(2000);
             scanSingleArticle();
             sleep(1000);
         }
     });
-    swipe(500, 1500, 500, 500, 2000);
+    swipe(device.width / 2, device.height / 4 * 3, device.width / 2, device.height / 4, 2000);//下滑
 }
 
 //文章里阅读循环
 function scanSingleArticle() {
     if (id(timerName).exists()) {
         log(timerName + "阅读计时圈存在");
-        var scanTime;
-        //区分视频和文章
-        if (id("textTitle").exists()) {
-            toastLog("进入视频观看");
-            scanTime = 6;
-        } else if (id("title").exists()) {
-            toastLog("进入文章阅读");
-            scanTime = 6;
-        }
-        for (var timer = 0; timer < scanTime; timer++) {
+        toastLog(">>>>>>>>>>>开始浏览文章<<<<<<<<<");
+        for (var i = 0; i < scanTime; i++) {
             if (!id(timerName).exists() || textEndsWith("重新播放").exists()) {
                 break;
             }
-            toastLog("浏览文章" + timer);
-            swipe(500, 1000, 500, 500, 1000);//下滑
-            sleep(random(1, 3) * 1000);
+            toastLog("浏览文章" + i);
+            swipe(device.width / 2, device.height / 2, device.width / 2, device.height / 4, 2000);//下滑
+            sleep(random(2, 5) * 1000);
         }
-    } else {
-        log(timerName + "阅读计时圈不存在");
-    }
-    returnMainPage();
-    //如果不能退回主页，点击左上角的x
-    if (!ifMainPage()) {
-        toastLog("不能退回主页，点击左上角的X");
-        click(adX, adY);
-    }
+    } 
+    toastLog(">>>>>>>>>>浏览文章结束<<<<<<<<<<<<");
+    //退回主页
+    back();
 }
 
-
-//退回主页
-function returnMainPage() {
-    for (var i = 1; i < 4; i++) {
-        log("退回次数" + i);
-        back();
-        sleep(1000);
-        var mainResult = ifMainPage();
-        if (mainResult) {
-            log("已退回到主页");
-            return;
-        }
-    }
-}
-//判断是否为主页
-function ifMainPage() {
-    var i = 0;
-    while (!textEndsWith(mainPageId).exists() && i <= 2) {
-        toastLog("未进入主页" + i);
-        sleep(1000);
-        i++;
-    }
-    if (!textEndsWith(mainPageId).exists()) {
-        return false;
-    }
-    return true;
-}
 
 //=====================================scanVideo===================================
 

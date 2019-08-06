@@ -12,7 +12,7 @@ commonFunction.selectAppName = function (appNameOptions) {
         toast("您取消了选择");
         exit();
     }
-    return appNameOptions[indexOption];
+    return indexOption;
 }
 
 //===================================prepareThings  start=====================================
@@ -67,7 +67,7 @@ commonFunction.getCaptureImg = function () {
 * @param noFindExit
 * @param exceptionMsg
 */
-commonFunction.clickByText = function (text, noFindExit, exceptionMsg) {
+commonFunction.clickByText = function (text) {
     if (textEndsWith(text).exists()) {
         textEndsWith(text).find().forEach(function (pos) {
             var posb = pos.bounds();
@@ -75,16 +75,7 @@ commonFunction.clickByText = function (text, noFindExit, exceptionMsg) {
             click(posb.centerX(), posb.centerY());
             toastLog("点击了" + text);
         });
-    } else {
-        if (noFindExit != null && noFindExit) {
-            if (exceptionMsg != null) {
-                toastLog(exceptionMsg);
-            } else {
-                toastLog("程序当前所处状态不合预期,脚本退出");
-            }
-            exit();
-        }
-    }
+    } 
 }
 
 /**
@@ -92,24 +83,14 @@ commonFunction.clickByText = function (text, noFindExit, exceptionMsg) {
 * @param desc
 * @param noFindExit
 */
-commonFunction.clickByDesc = function (desc, noFindExit, exceptionMsg) {
+commonFunction.clickByDesc = function (desc) {
     if (descEndsWith(desc).exists()) {
         descEndsWith(desc).find().forEach(function (pos) {
             var posb = pos.bounds();
             click(posb.centerX(), posb.centerY());
             sleep(2000);
         });
-    } else {
-        if (noFindExit != null && noFindExit) {
-            if (exceptionMsg != null) {
-                toastLog(exceptionMsg);
-                exit();
-            } else {
-                toastLog("程序当前所处状态不合预期,脚本退出");
-                exit();
-            }
-        }
-    }
+    } 
 }
 
 /**
@@ -144,7 +125,6 @@ commonFunction.wakeUpScreen = function () {
 * 启动app，进入app主页
 * @param appName
 * @param waitTime   等待时间，单位秒
-* @param mainPageFlag   主页标识
 */
 commonFunction.enterMainPage = function (appName, waitTime) {
     launchApp(appName);
@@ -223,6 +203,33 @@ commonFunction.ifTimerExists = function (timers) {
         }
     }
     return exists_timer;
+}
+
+//退回主页
+function returnMainPage() {
+    for (var i = 1; i < 4; i++) {
+        log("退回次数" + i);
+        back();
+        sleep(1000);
+        var mainResult = ifMainPage();
+        if (mainResult) {
+            log("已退回到主页");
+            return;
+        }
+    }
+}
+//判断是否为主页
+function ifMainPage(mainPageId) {
+    var i = 0;
+    while (!textEndsWith(mainPageId).exists() && i <= 2) {
+        toastLog("未进入主页" + i);
+        sleep(1000);
+        i++;
+    }
+    if (!textEndsWith(mainPageId).exists()) {
+        return false;
+    }
+    return true;
 }
 
 

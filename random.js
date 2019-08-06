@@ -28,6 +28,7 @@ var appNameArray = [appName_xiangkan, appName_weili, appName_shandianhezi, appNa
 var moduleNameArray = [module_xiangkan, module_weili, module_shandianhezi, module_shuabaoduanshipin,
                          module_jukandian,module_huitoutiao,module_souhuzixun,module_zhongqingkandian];
 
+
                          
 //打开软件等待时间，单位秒
 var waitTime = 15;

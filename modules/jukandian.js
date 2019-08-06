@@ -1,7 +1,4 @@
-var commonFunction;
 var module_jukandian = {};
-//主页标识
-var mainPageId;
 
 //选择要启动的模块
 var firstPage_option = "看点"; //首页文章区
@@ -35,12 +32,16 @@ var timers = [commentCollectId, commentLayoutId, commentTextId, commentShareId,
 var videoButton = "item_video_play";
 
 //==============================程序启动区=======================================
-module_jukandian.start = function (commonFunctionParam, mainPageFlag) {
-    commonFunction = commonFunctionParam;
-    mainPageId = mainPageFlag;
+module_jukandian.start = function () {
     //选择模块
     selectModule();
 }
+
+module_jukandian.start_random = function () {
+    //选择模块
+    selectArticle();
+}
+
 //=====================================selectModule start===================================
 //选择模块
 function selectModule() {
@@ -82,19 +83,15 @@ function selectArticle() {
     if (!id(searchKey).exists()) {
         toastLog("文章不存在，滑动");
         swipe(device.width / 2, device.height / 4 * 3, device.width / 2, device.height / 4, 2000);//下滑
+        clickAwardBtn();
         return;
     }
     //遍历点击文章
     toastLog("当页浏览开始！");
     id(searchKey).find().forEach(function (pos) {
-        if (id("dismisstv").exists()) {
-            id("dismisstv").findOne().click();
-        }
-        if (textEndsWith("忽略").exists()) {
-            textEndsWith("忽略").findOne().click();
-        }
         var posb = pos.bounds();
         if (posb.centerX() > 0 && posb.centerX() < 1000 && posb.centerY() > 400 && posb.centerY() < 1800) {
+            clickAwardBtn();
             log("该条新闻中心坐标：centerX:" + posb.centerX() + ",centerY:" + posb.centerY());
             click(posb.centerX(), posb.centerY());
             toastLog("点击了文章，准备进入文章！");
@@ -115,7 +112,7 @@ function scanSingleArticle() {
         toastLog("浏览文章" + i);
         clickAwardBtn();
         swipe(device.width / 2, device.height / 2, device.width / 2, device.height / 4, 2000);//下滑
-        sleep(random(2, 5) * 1000);
+        sleep(random(2, 4) * 1000);
     }
     toastLog(">>>>>>>>>>浏览文章结束<<<<<<<<<<<<");
     back();
@@ -127,7 +124,6 @@ function clickAwardBtn() {
     if (textEndsWith("领金币").exists()) {
         textEndsWith("领金币").find().forEach(function (pos) {
             var posb = pos.bounds();
-            // log("posb.centerX():" + posb.centerX() + ",posb.centerY():" + posb.centerY());
             if (posb.centerX() > 0 && posb.centerX() < 1000 && posb.centerY() > 400 && posb.centerY() < 1800) {
                 click(700, (posb.centerY() + 80));
                 toastLog("点击了福袋，领取金币");
@@ -137,6 +133,18 @@ function clickAwardBtn() {
     }
     if (textEndsWith("继续阅读").exists()) {
         textEndsWith("继续阅读").findOne().click();
+    }
+    if (textEndsWith("继续赚钱").exists()) {
+        textEndsWith("继续赚钱").findOne().click();
+    }
+    if (id("cancel_quit").exists()) {
+        id("cancel_quit").findOne().click();
+    }
+    if (id("dismisstv").exists()) {
+        id("dismisstv").findOne().click();
+    }
+    if (textEndsWith("忽略").exists()) {
+        textEndsWith("忽略").findOne().click();
     }
 }
 

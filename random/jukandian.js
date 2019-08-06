@@ -28,12 +28,6 @@ function selectArticle() {
     //遍历点击文章
     toastLog("当页浏览开始！");
     id(searchKey).find().forEach(function (pos) {
-        if (id("dismisstv").exists()) {
-            id("dismisstv").findOne().click();
-        }
-        if (textEndsWith("忽略").exists()) {
-            textEndsWith("忽略").findOne().click();
-        }
         var posb = pos.bounds();
         if (posb.centerX() > 0 && posb.centerX() < 1000 && posb.centerY() > 400 && posb.centerY() < 1800) {
             clickAwardBtn();
@@ -69,7 +63,6 @@ function clickAwardBtn() {
     if (textEndsWith("领金币").exists()) {
         textEndsWith("领金币").find().forEach(function (pos) {
             var posb = pos.bounds();
-            // log("posb.centerX():" + posb.centerX() + ",posb.centerY():" + posb.centerY());
             if (posb.centerX() > 0 && posb.centerX() < 1000 && posb.centerY() > 400 && posb.centerY() < 1800) {
                 click(700, (posb.centerY() + 80));
                 toastLog("点击了福袋，领取金币");
@@ -85,6 +78,12 @@ function clickAwardBtn() {
     }
     if (id("cancel_quit").exists()) {
         id("cancel_quit").findOne().click();
+    }
+    if (id("dismisstv").exists()) {
+        id("dismisstv").findOne().click();
+    }
+    if (textEndsWith("忽略").exists()) {
+        textEndsWith("忽略").findOne().click();
     }
 }
 

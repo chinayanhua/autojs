@@ -41,7 +41,7 @@ function enterAntForest() {
         i++;
     }
     //进入蚂蚁森林
-    commonFunction.clickByText("蚂蚁森林", true, "请把蚂蚁森林入口添加到主页我的应用");
+    commonFunction.clickByText("蚂蚁森林");
     //等待进入自己的主页
     sleep(5000);
 }
@@ -99,7 +99,7 @@ function enterRank() {
     swipe(520, 2000, 520, 100, 1000);
     swipe(520, 2000, 520, 100, 1000);
     sleep(2500);
-    commonFunction.clickByText("查看更多好友", true, "程序未找到排行榜入口,脚本退出");
+    commonFunction.clickByText("查看更多好友");
     //等待排行榜主页出现
     sleep(2000);
     var i = 0;

@@ -1,7 +1,5 @@
-var commonFunction;
 var module_huitoutiao = {};
-//主页标识
-var mainPageId;
+
 //选择要启动的模块
 // var refresh_option = "刷新"; //首页文章区
 var firstPage_option = "头条"; //首页文章区
@@ -17,12 +15,15 @@ var videoButton = "alivc_player_state";
 var timer = articleId;
 
 //==============================程序启动区=======================================
-module_huitoutiao.start = function (commonFunctionParam, mainPageFlag) {
-    commonFunction = commonFunctionParam;
-    mainPageId = mainPageFlag;
+module_huitoutiao.start = function () {
     //选择模块
     selectModule();
 }
+
+module_huitoutiao.start_random = function () {
+    selectArticle();
+}
+
 //=====================================selectModule start===================================
 //选择模块
 function selectModule() {
@@ -96,7 +97,6 @@ function scanArticle() {
     sleep(2000);
     //先划出置顶区
     swipe(500, 1300, 500, 200, 500);
-    swipe(500, 1300, 500, 200, 500);
     while (true) {
         selectArticle();
     }
@@ -107,64 +107,36 @@ function selectArticle() {
     //判断当页是否存在可以点击的文章
     if (!id(searchKey).exists()) {
         toastLog("文章不存在，滑动");
-        swipe(500, 1300, 500, 200, 2000);
+        swipe(device.width / 2, device.height / 4 * 3, device.width / 2, device.height / 4, 2000);//下滑
         return;
     }
-    toastLog("文章存在");
     //遍历点击文章
     id(searchKey).find().forEach(function (pos) {
         var posb = pos.bounds();
-        if (posb.centerX() < 0 || posb.centerY() < 400 || posb.centerY() > 1800) {
-            //如果坐标点为负，点击会报错，跳过本条
-            // swipe(500, 1300, 500, 200, 2000);
-        } else {
+        if (posb.centerX() > 0 && posb.centerX() < 1000 && posb.centerY() > 400 && posb.centerY() < 1800) {
             log("该条新闻中心坐标：centerX:" + posb.centerX() + ",centerY:" + posb.centerY());
-            click(posb.centerX(), (posb.centerY() - 50));
+            click(posb.centerX(), posb.centerY());
             toastLog("点击了文章，准备进入文章！");
-            for (var limitCount = 1; limitCount < 4; limitCount++) {
-                sleep(1000);
-                if (id(timer).exists()) {
-                    break;
-                } else {
-                    toastLog("进入次数:" + limitCount);
-                }
-            }
+            sleep(2000);
             //开始浏览文章
             scanSingleArticle();
             sleep(2000);
         }
     });
-    swipe(500, 1300, 500, 200, 2000);
+    swipe(device.width / 2, device.height / 4 * 3, device.width / 2, device.height / 4, 2000);//下滑
 }
 
 //文章里阅读循环
 function scanSingleArticle() {
-    if (id(timer).exists()) {
-        toastLog(">>>>>>>>>>>金币阅读计时圈存在，开始浏览文章<<<<<<<<<");
-        var scanTime = 10;
-        for (var i = 0; i < scanTime; i++) {
-            if (!id(timer).exists()) {
-                toastLog("金币阅读计时圈不存在，退出");
-                break;
-            }
-            toastLog("浏览文章" + i);
-            swipe(500, 1000, 500, 500, 1000);//下滑
-            sleep(random(3, 6) * 1000);
-        }
-        toastLog(">>>>>>>>>>浏览文章结束<<<<<<<<<<<<");
-        //退回主页
-        commonFunction.returnMainPage(mainPageId);
-    } else if (!id(timer).exists()) {
-        toastLog("金币阅读计时圈不存在，退出");
-        //退回主页
-        commonFunction.returnMainPage(mainPageId);
-    } else if (textEndsWith("关闭").exists()) {
-        //如果是进入了广告，退不出去，检测是否有关闭按钮,点击关闭
-        textEndsWith("关闭").findOne().click();
-        if (!commonFunction.ifMainPage(mainPageId)) {
-            commonFunction.returnMainPage(mainPageId);
-        }
+    toastLog(">>>>>>>>>>>开始浏览文章<<<<<<<<<");
+    for (var i = 0; i < scanTime; i++) {
+        toastLog("浏览文章" + i);
+        swipe(device.width / 2, device.height / 2, device.width / 2, device.height / 4, 2000);//下滑
+        sleep(random(2, 5) * 1000);
     }
+    toastLog(">>>>>>>>>>浏览文章结束<<<<<<<<<<<<");
+    //退回主页
+    back();
 }
 
 //=====================================scanVideo===================================

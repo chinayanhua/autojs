@@ -1,9 +1,5 @@
-//引入外部文件
-var commonFunction;
 var module_shandianhezi = {};
 //============================== 全局变量=======================================
-//首页标识-闪电盒子
-var mainPageId;
 
 //选择要启动的模块
 var firstPage_option = "首页"; //首页文章区
@@ -19,13 +15,19 @@ var videoFlagId = "video_title";
 //进入短视频页面的flag
 var littleVideoEnterFlag = "user_nick_name";
 
+//文章滑动次数
+var scanTimes = 15;
+
 //==============================程序启动区=======================================
 
-module_shandianhezi.start = function (common, mainPageFlag) {
-    commonFunction = common;
-    mainPageId = mainPageFlag;
+module_shandianhezi.start = function () {
     //选择启动的模块
     selectModule();
+}
+
+module_shandianhezi.start_random = function () {
+    //选择启动的模块
+    scanFirstPage();
 }
 
 //===================================选择启动模块====================================
@@ -44,7 +46,9 @@ function selectModule() {
     } else if (options[indexOption] == goods_option) {
         scanGoods();
     } else if (options[indexOption] == firstPage_option) {
-        scanFirstPage();
+        while (true) {
+            scanFirstPage();
+        }
     }
 }
 
@@ -53,42 +57,32 @@ function selectModule() {
  * 首页：文章区
  */
 function scanFirstPage() {
-    sleep(1000);
-    if (!textEndsWith(firstPage_option).exists()) {
-        toastLog("首页识别失败，请手动进入");
-        alert("请手动点击首页按钮，进入文章区！");
-        sleep(2000);
-        scanFirstPage();
+    swipe(device.width / 2, device.height / 4 * 3, device.width / 2, device.height / 4, 2000);//下滑
+    if (id("from_text").exists()) {
+        id("from_text").find().forEach(function (pos) {
+            var text = pos.text();
+            if (pos.text().search("(广告)") != -1) {
+                log(">>>>>>>广告跳过<<<<<<<");
+                return;
+            }
+            log(text);
+            var posb = pos.bounds();
+            if (posb.centerX() > 0 && posb.centerX() < 1000 && posb.centerY() > 400 && posb.centerY() < 1800) {
+                log("该条新闻中心坐标：centerX:" + posb.centerX() + ",centerY:" + posb.centerY());
+                click(posb.centerX(), posb.centerY());
+                toastLog("点击了文章，准备进入文章！");
+                sleep(2000);
+                for (var i = 0; i < scanTimes; i++) {
+                    toastLog("阅读文章中......" + i);
+                    swipe(device.width / 2, device.height / 2, device.width / 2, device.height / 4, 2000);//下滑
+                    sleep(random(2, 5) * 1000);
+                }
+                back();
+                sleep(2000);
+            }
+        });
     } else {
-        textEndsWith(firstPage_option).findOne().click();
-        toastLog("点击了首页");
-    }
-
-    while (true) {
-        swipe(500, 1000, 200, 500, 2000);
-        click(500, 1000);
-        toastLog("点击了文章！");
-        sleep(2000);
-        if ((id(articleFlagId).exists() || id(videoFlagId).exists()) && !textEndsWith("我的").exists()) {
-            toastLog("存在文章标记");
-            for (var i = 0; i < 10; i++) {
-                toastLog("阅读文章中......" + i);
-                swipe(500, 1000, 200, 500, 2000);
-            }
-            back();
-            sleep(1000);
-        } else {
-            toastLog("不存在文章标记id，退出!");
-            back();
-            sleep(1000);
-            if (!textEndsWith(mainPageId).exists() & textEndsWith("拒绝").exists()) {
-                toastLog("让下载软件，拒绝！");
-                textEndsWith("拒绝").findOne().click();
-            }
-            //检查是否回到主页
-            ifMainPage();
-            continue;
-        }
+        sleep(5000);
     }
 }
 
@@ -128,23 +122,6 @@ function scanLittleVedio() {
     }
 }
 
-function ifMainPage() {
-    for (let index = 0; index < 5; index++) {
-        if (!textEndsWith(mainPageId).exists()) {
-            toastLog("不存在 " + mainPageId + index);
-            back();
-            sleep(1000);
-        } else {
-            break;
-        }
-    }
-    if (!textEndsWith(mainPageId).exists()) {
-        toastLog("一直未进入主页，退出脚本!");
-        alert("无法回到主页，请手动回到主页！");
-        return false;
-    }
-    return true;
-}
 //===================================逛逛领币：商品模块====================================
 
 /**
