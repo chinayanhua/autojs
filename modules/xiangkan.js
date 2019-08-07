@@ -1,3 +1,4 @@
+var commonFunction;
 var module_xiangkan = {};
 //选择要启动的模块
 var firstPage_option = "首页"; //首页文章区
@@ -24,11 +25,13 @@ var coin_img_Id = "coin_img_big";
 var videoButton = "video_item_play_btn";
 
 //==============================程序启动区=======================================
-module_xiangkan.start = function () {
+module_xiangkan.start = function (common) {
+    commonFunction = common;
     //选择模块
     selectModule();
 }
-module_xiangkan.start_random = function () {
+module_xiangkan.start_random = function (common) {
+    commonFunction = common;
     selectArticle();
 }
 
@@ -55,14 +58,7 @@ function selectModule() {
 //浏览文章
 function scanArticle() {
     sleep(2000);
-    if (textEndsWith(firstPage_option).exists()) {
-        textEndsWith(firstPage_option).findOne().click();
-    }
-    if (!textEndsWith(firstPage_option).exists()) {
-        // toastLog("文章区识别失败，请手动进入");
-        alert("请手动点击头条按钮，进入文章区！");
-    }
-    sleep(3000);
+    commonFunction.clickByText(firstPage_option);
     while (true) {
         selectArticle();
     }
@@ -112,34 +108,10 @@ function scanSingleArticle() {
 
 
 function clickMoreMinuteBtn() {
-    if (id(more_minute_btn_id).exists()) {
-        log(more_minute_btn_id + " exists");
-        id(more_minute_btn_id).findOne().click();
-    }
-    if (id(fudai_icon_id).exists()) {
-        log(fudai_icon_id + " exists");
-        id(fudai_icon_id).find().forEach(function (pos) {
-            var posb = pos.bounds();
-            if (posb.centerX() > 0 && posb.centerX() < 1000 && posb.centerY() > 400 && posb.centerY() < 1800) {
-                log("点击"+fudai_icon_id);
-                click(posb.centerX(), posb.centerY());
-            }
-        });
-    }
-    if (id(fudai_btn_id).exists()) {
-        log(fudai_btn_id + " exists");
-        id(fudai_btn_id).find().forEach(function (pos) {
-            var posb = pos.bounds();
-            if (posb.centerX() > 0 && posb.centerX() < 1000 && posb.centerY() > 400 && posb.centerY() < 1800) {
-                log("点击"+fudai_btn_id);
-                click(posb.centerX(), posb.centerY());
-            }
-        });
-    }
-    if (textEndsWith(fudai_btn_text).exists()) {
-        log(fudai_btn_text + " exists");
-        textEndsWith(fudai_btn_text).findOne().click();
-    }
+    commonFunction.clickByText(fudai_btn_text);
+    commonFunction.clickById(more_minute_btn_id);
+    commonFunction.clickById(fudai_icon_id);
+    commonFunction.clickById(fudai_btn_id);
 }
 
 
@@ -147,28 +119,20 @@ function clickMoreMinuteBtn() {
 
 function scanVideo() {
     if (!textEndsWith(video_option).exists()) {
-        toastLog("自动识别视频失败，请手动进入！");
+        // toastLog("自动识别视频失败，请手动进入！");
         alert("请手动点视频按钮！");
-        sleep(3000);
     } else {
         toastLog("自动识别到视频按钮，点击进入！");
-        textEndsWith(video_option).findOne().click();
-        sleep(2000);
+        commonFunction.clickByText(video_option);
     }
-    if (!id(videoButton).exists()) {
-        alert("请手动点视频按钮！");
-        sleep(3000);
-    }
+    sleep(2000);
     //开始浏览视频
     while (true) {
         if (id(videoButton).exists()) {
             id(videoButton).find().forEach(function (pos) {
                 var posb = pos.bounds();
-                if (posb.centerX() < 0 || posb.centerY() < 400 || posb.centerY() > 1800) {
-                    //如果坐标点为负，点击会报错，跳过本条
-                    log("坐标点为负，滑动");
-                } else {
-                    log("该条新闻中心坐标：centerX:" + posb.centerX() + ",centerY:" + posb.centerY());
+                if (posb.centerX() > 0 && posb.centerX() < 1000 && posb.centerY() > 400 && posb.centerY() < 1800) {
+                    // log("该条新闻中心坐标：centerX:" + posb.centerX() + ",centerY:" + posb.centerY());
                     click(posb.centerX(), posb.centerY());
                     toastLog("点击播放按钮！");
                     sleep(2000);
@@ -176,10 +140,8 @@ function scanVideo() {
                     sleep(1000);
                 }
             });
-        } else {
-            swipe(500, 1500, 500, 500, 2000);
         }
-        swipe(500, 1500, 500, 500, 2000);
+        swipe(device.width / 2, device.height / 4 * 3, device.width / 2, device.height / 4, 2000);//下滑
     }
 }
 

@@ -64,16 +64,33 @@ commonFunction.getCaptureImg = function () {
 /**
 * 根据text值 点击
 * @param text
-* @param noFindExit
-* @param exceptionMsg
 */
 commonFunction.clickByText = function (text) {
     if (textEndsWith(text).exists()) {
         textEndsWith(text).find().forEach(function (pos) {
             var posb = pos.bounds();
-            log("posb.centerX():" + posb.centerX() + ",posb.centerY():" + posb.centerY());
-            click(posb.centerX(), posb.centerY());
-            toastLog("点击了" + text);
+            // log("posb.centerX():" + posb.centerX() + ",posb.centerY():" + posb.centerY());
+            if (posb.centerX() > 0 && posb.centerX() < 1000 && posb.centerY() > 0 && posb.centerY() < 1800) {
+                click(posb.centerX(), posb.centerY());
+                toastLog("点击了" + text);
+            }
+        });
+    } 
+}
+
+/**
+* 根据id值 点击
+* @param clickId
+*/
+commonFunction.clickById = function (clickId) {
+    if (id(clickId).exists()) {
+        id(clickId).find().forEach(function (pos) {
+            var posb = pos.bounds();
+            // log("posb.centerX():" + posb.centerX() + ",posb.centerY():" + posb.centerY());
+            if (posb.centerX() > 0 && posb.centerX() < 1000 && posb.centerY() > 0 && posb.centerY() < 1800) {
+                click(posb.centerX(), posb.centerY());
+                toastLog("点击了" + clickId);
+            }
         });
     } 
 }
@@ -81,14 +98,14 @@ commonFunction.clickByText = function (text) {
 /**
 * 根据描述值 点击
 * @param desc
-* @param noFindExit
 */
 commonFunction.clickByDesc = function (desc) {
     if (descEndsWith(desc).exists()) {
         descEndsWith(desc).find().forEach(function (pos) {
             var posb = pos.bounds();
-            click(posb.centerX(), posb.centerY());
-            sleep(2000);
+            if (posb.centerX() > 0 && posb.centerX() < 1000 && posb.centerY() > 0 && posb.centerY() < 1800) {
+                click(posb.centerX(), posb.centerY());
+            }
         });
     } 
 }
@@ -126,21 +143,15 @@ commonFunction.wakeUpScreen = function () {
 * @param appName
 * @param waitTime   等待时间，单位秒
 */
-commonFunction.enterMainPage = function (appName, waitTime) {
+commonFunction.enterMainPage = function (appName) {
     launchApp(appName);
-    toastLog("等待" + waitTime + "s," + appName + "启动");
+    waitForPackage(getPackageName(appName));
+    commonFunction.clickByText("跳过");
+    commonFunction.clickByText("开启消息推送");
+    commonFunction.clickById("normaldlg_btn_close");
+    // toastLog("等待" + waitTime + "s," + appName + "启动");
     //等待进入自己的主页
-    sleep(waitTime * 1000);
-    //如果有广告，跳过
-    if (textEndsWith("跳过").exists()) {
-        toastLog("广告，点击跳过！");
-        textEndsWith("跳过").findOne().click();
-    }
-    //打开后有消息推送提醒，关闭
-    if (textEndsWith("开启消息推送").exists()) {
-        log("关闭消息推送");
-        id("normaldlg_btn_close").findOne().click();
-    }
+    sleep(7000);
 }
 //强制关闭app
 commonFunction.shutdownApp = function (appName) {

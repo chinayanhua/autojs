@@ -1,6 +1,5 @@
-
+var commonFunction;
 var module_souhuzixun = {};
-
 //============================== 全局变量=======================================
 //选择要启动的模块
 var firstPage_option = "首页";
@@ -9,7 +8,7 @@ var options = [firstPage_option, video_option];  //可以选择的模块
 
 //识别文章的定位点
 var searchKey_articleTime = "article_time";
-var scanTime= 10;
+var scanTime = 10;
 //文章广告左上角x的坐标：x=70,y=125
 var adX = 70;
 var adY = 125;
@@ -19,7 +18,8 @@ var timerName = "counting_img";
 
 //==============================程序启动区=======================================
 //程序主入口
-module_souhuzixun.start = function () {
+module_souhuzixun.start = function (common) {
+    commonFunction = common;
     //选择ui
     var indexOption = dialogs.select("请选择一个模块", options);
     //取消了选择
@@ -35,10 +35,11 @@ module_souhuzixun.start = function () {
         }
     } else if (options[indexOption] == video_option) {
         scanVideo();
-    } 
+    }
 };
 
-module_souhuzixun.start_random = function () {
+module_souhuzixun.start_random = function (common) {
+    commonFunction = common;
     selectArticle();
 };
 
@@ -80,49 +81,41 @@ function scanSingleArticle() {
             swipe(device.width / 2, device.height / 2, device.width / 2, device.height / 4, 2000);//下滑
             sleep(random(2, 5) * 1000);
         }
-    } 
+    }
     toastLog(">>>>>>>>>>浏览文章结束<<<<<<<<<<<<");
     //退回主页
     back();
 }
-
-
 //=====================================scanVideo===================================
 
 //浏览视频
-function scanVideo(){
+function scanVideo() {
     sleep(2000);
     if (!textEndsWith(video_option).exists()) {
-        toastLog("自动识别视频按钮失败，请手动进入！");
+        // toastLog("自动识别视频按钮失败，请手动进入！");
         alert("请手动点小视频按钮！");
-        sleep(3000);
-    }else{
+    } else {
         toastLog("视频按钮存在，点击按钮！");
-        textEndsWith(video_option).findOne().click();
-        if(!id("start").exists()){
-            toastLog("识别未进入");
+        commonFunction.clickByText(video_option);
+        if (!id("start").exists()) {
+            toastLog("识别未进入视频");
             scanVideo();
         }
     }
-    sleep(1000);
-    while(true){
-        if(id("start").exists()){
+    sleep(3000);
+    while (true) {
+        if (id("start").exists()) {
             id("start").find().forEach(function (pos) {
                 var posb = pos.bounds();
-                if (posb.centerX() < 0 || posb.centerY() < 400 || posb.centerY() > 1800) {
-                    //如果坐标点为负，点击会报错，跳过本条
-                    log("坐标点为负，滑动");
-                } else {
+                if (posb.centerX() > 0 && posb.centerX() < 1000 && posb.centerY() > 400 && posb.centerY() < 1800) {
                     log("该条新闻中心坐标：centerX:" + posb.centerX() + ",centerY:" + posb.centerY());
                     click(posb.centerX(), posb.centerY());
                     toastLog("点击视频播放按钮！");
                     sleep(10000);
                 }
             });
-            swipe(500, 1500, 500, 500, 2000);
-        }else{
-            swipe(500, 1500, 500, 500, 2000);
-        }
+        } 
+        swipe(device.width / 2, device.height / 4 * 3, device.width / 2, device.height / 4, 2000);//下滑
     }
 }
 

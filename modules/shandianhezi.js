@@ -1,4 +1,5 @@
 var module_shandianhezi = {};
+var commonFunction;
 //============================== 全局变量=======================================
 
 //选择要启动的模块
@@ -19,17 +20,14 @@ var littleVideoEnterFlag = "user_nick_name";
 var scanTimes = 15;
 
 //==============================程序启动区=======================================
-
-module_shandianhezi.start = function () {
-    //选择启动的模块
+module_shandianhezi.start = function (common) {
+    commonFunction = common;
     selectModule();
 }
-
-module_shandianhezi.start_random = function () {
-    //选择启动的模块
+module_shandianhezi.start_random = function (common) {
+    commonFunction = common;
     scanFirstPage();
 }
-
 //===================================选择启动模块====================================
 function selectModule() {
     //选择ui
@@ -81,9 +79,8 @@ function scanFirstPage() {
                 sleep(2000);
             }
         });
-    } else {
-        sleep(5000);
     }
+    swipe(device.width / 2, device.height / 4 * 3, device.width / 2, device.height / 4, 2000);//下滑
 }
 
 //===================================短视频====================================
@@ -112,13 +109,10 @@ function scanLittleVedio() {
         gesture(1500, [random(300, 600), 1600], [random(300, 600), 200])
         swipeCount++;
 
-        if (textEndsWith("继续观看").exists()) {
-            textEndsWith("继续观看").findOne().click();
-        }
+        commonFunction.clickByText("继续观看");
         if (id("btn_continue_watch").exists()) {
-            id("继续观看").findOne().click();
+            commonFunction.clickById("继续观看");
         }
-
     }
 }
 
@@ -136,7 +130,7 @@ function scanGoods() {
     var notLikeId = "不喜欢";
     while (true) {
         alert("请手动点开" + goods_option);
-        sleep(5000);
+        sleep(3000);
         if (textEndsWith(liveZoneFlag).exists() || textEndsWith(LiveZoneEndFlag).exists() || id(rmb_price).exists()) {
             toastLog("已经进入了" + goods_option);
             break;
@@ -148,11 +142,11 @@ function scanGoods() {
     while (true) {
         if (textEndsWith(LiveZoneEndFlag).exists() || id(rmb_price).exists()) {
             toastLog("已经出直播区");
-            swipe(500, 1500, 500, 300, 2000);
+            swipe(device.width / 2, device.height / 4 * 3, device.width / 2, device.height / 4, 2000);//下滑
             break;
         } else if (textEndsWith(liveZoneFlag).exists()) {
             toastLog("还在直播区，滑动");
-            swipe(500, 1500, 500, 300, 2000);
+            swipe(device.width / 2, device.height / 4 * 3, device.width / 2, device.height / 4, 2000);//下滑
         }
     }
 
@@ -168,10 +162,7 @@ function scanGoods() {
             id(rmb_price).find().forEach(function (pos) {
                 //点击进入某一个商品详情页
                 var posb = pos.bounds();
-                log("posb.centerX():" + posb.centerX() + ",posb.centerY():" + posb.centerY());
-                if (posb.centerX() < 0 || posb.centerY() < 400 || posb.centerY() > 1800) {
-                    toastLog("坐标点为负，点击会报错，跳过本条");
-                } else {
+                if (posb.centerX() > 0 && posb.centerX() < 1000 && posb.centerY() > 400 && posb.centerY() < 1800) {
                     click(posb.centerX(), posb.centerY());
                     toastLog("点击了" + rmb_price);
                     sleep(2000);
@@ -179,7 +170,6 @@ function scanGoods() {
                     if (textEndsWith(notLikeId).exists()) {
                         textEndsWith(notLikeId).find().forEach(function (pos) {
                             var posb = pos.bounds();
-                            log("posb.centerX():" + posb.centerX() + ",posb.centerY():" + posb.centerY());
                             click(posb.centerX(), posb.centerY());
                             toastLog("点击了" + notLikeId);
                         });

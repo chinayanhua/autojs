@@ -1,5 +1,4 @@
-
-
+var commonFunction;
 var module_shuabaoduanshipin = {};
 
 //=========================刷宝短视频==========================
@@ -8,18 +7,17 @@ var focusId = "关注";
 var tipShowId = "btn_view";//金币到账通知id
 var swipeCount = 1;
 
-module_shuabaoduanshipin.start = function () {
+module_shuabaoduanshipin.start = function (common) {
+    commonFunction = common;
     while (true) {
         scanVideo();
     }
 }
-
-module_shuabaoduanshipin.start_random = function () {
+module_shuabaoduanshipin.start_random = function (common) {
+    commonFunction = common;
     scanVideo();
 }
 //===================================================================
-
-
 function scanVideo() {
     if (id(tipShowId).exists()) {
         id(tipShowId).findOne().click();

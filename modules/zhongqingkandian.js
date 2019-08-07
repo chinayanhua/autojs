@@ -1,4 +1,5 @@
 var module_zhongqingkandian = {};
+var commonFunction;
 //选择要启动的模块
 var firstPage_option = "首页"; //首页文章区
 var video_option = "视频";
@@ -12,16 +13,13 @@ var scanTime = 10;
 //视频按钮id
 var videoButton = "a28";
 
-
-
 //==============================程序启动区=======================================
-module_zhongqingkandian.start = function () {
-    //选择模块
+module_zhongqingkandian.start = function (common) {
+    commonFunction = common;
     selectModule();
 }
-
-module_zhongqingkandian.start_random = function () {
-    //选择模块
+module_zhongqingkandian.start_random = function (common) {
+    commonFunction = common;
     selectArticle();
 }
 //=====================================selectModule start===================================
@@ -47,8 +45,7 @@ function selectModule() {
 //=====================================scanArticle start===================================
 //浏览文章
 function scanArticle() {
-    alert("请手动点击头条按钮，进入文章区！");
-    sleep(3000);
+    sleep(2000);
     while (true) {
         selectArticle();
     }
@@ -70,8 +67,8 @@ function selectArticle() {
             // log("该条新闻中心坐标：centerX:" + posb.centerX() + ",centerY:" + posb.centerY());
             click(posb.centerX(), posb.centerY());
             toastLog("点击了文章，准备进入文章！");
-            sleep(2000);
             //开始浏览文章
+            sleep(2000);
             scanSingleArticle();
             sleep(2000);
         }
@@ -89,24 +86,24 @@ function scanSingleArticle() {
             sleep(random(2, 5) * 1000);
         }
         toastLog(">>>>>>>>>>浏览文章结束<<<<<<<<<<<<");
-    } else {
-        toastLog("金币阅读计时圈不存在，退出");
-    }
+    } 
     //退回主页
     back();
 }
 
 //清理广告
 function clearAd() {
-    if (id("jp").exists()) {
-        id("jp").findOne().click();
-    }
+    //首页领取金币按钮
+    commonFunction.clickById("yj");
+    sleep(1000);
+    //首页广告，关闭按钮
+    commonFunction.clickById("jp");
 }
 
 //=====================================scanVideo===================================
 //浏览视频
 function scanVideo() {
-    textEndsWith(video_option).findOne().click();
+    commonFunction.clickByText(video_option);
     sleep(2000);
     //开始浏览视频
     while (true) {
@@ -126,6 +123,5 @@ function scanVideo() {
         swipe(device.width / 2, device.height / 4 * 3, device.width / 2, device.height / 4, 2000);
     }
 }
-
 //=====================================end===================================
 module.exports = module_zhongqingkandian;
