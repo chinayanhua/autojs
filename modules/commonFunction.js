@@ -75,7 +75,7 @@ commonFunction.clickByText = function (text) {
                 toastLog("点击了" + text);
             }
         });
-    } 
+    }
 }
 
 /**
@@ -92,7 +92,7 @@ commonFunction.clickById = function (clickId) {
                 toastLog("点击了" + clickId);
             }
         });
-    } 
+    }
 }
 
 /**
@@ -107,7 +107,7 @@ commonFunction.clickByDesc = function (desc) {
                 click(posb.centerX(), posb.centerY());
             }
         });
-    } 
+    }
 }
 
 /**
@@ -144,15 +144,17 @@ commonFunction.wakeUpScreen = function () {
 * @param waitTime   等待时间，单位秒
 */
 commonFunction.enterMainPage = function (appName) {
+    toastLog("等待" + appName + "启动");
     launchApp(appName);
     waitForPackage(getPackageName(appName));
     commonFunction.clickByText("跳过");
     commonFunction.clickByText("开启消息推送");
     commonFunction.clickById("normaldlg_btn_close");
-    // toastLog("等待" + waitTime + "s," + appName + "启动");
     //等待进入自己的主页
-    sleep(7000);
+    sleep(10000);
 }
+
+
 //强制关闭app
 commonFunction.shutdownApp = function (appName) {
     var packageName = app.getPackageName(appName);
@@ -215,37 +217,6 @@ commonFunction.ifTimerExists = function (timers) {
     }
     return exists_timer;
 }
-
-//退回主页
-function returnMainPage() {
-    for (var i = 1; i < 4; i++) {
-        log("退回次数" + i);
-        back();
-        sleep(1000);
-        var mainResult = ifMainPage();
-        if (mainResult) {
-            log("已退回到主页");
-            return;
-        }
-    }
-}
-//判断是否为主页
-function ifMainPage(mainPageId) {
-    var i = 0;
-    while (!textEndsWith(mainPageId).exists() && i <= 2) {
-        toastLog("未进入主页" + i);
-        sleep(1000);
-        i++;
-    }
-    if (!textEndsWith(mainPageId).exists()) {
-        return false;
-    }
-    return true;
-}
-
-
-//=====================================enterMainPage end===================================
-
 
 //===================================公共方法区  end=====================================
 
