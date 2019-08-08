@@ -183,8 +183,7 @@ commonFunction.returnMainPage = function (mainPageId) {
         toastLog("退回次数" + i);
         back();
         sleep(2000);
-        var mainResult = commonFunction.ifMainPage(mainPageId);
-        if (mainResult) {
+        if (textEndsWith(mainPageId).exists()) {
             toastLog("已退回到主页");
             return;
         }
@@ -193,12 +192,6 @@ commonFunction.returnMainPage = function (mainPageId) {
 
 //判断是否为主页
 commonFunction.ifMainPage = function (mainPageId) {
-    var i = 0;
-    while (!textEndsWith(mainPageId).exists() && i <= 2) {
-        toastLog("未进入主页" + i);
-        sleep(2000);
-        i++;
-    }
     if (!textEndsWith(mainPageId).exists()) {
         return false;
     }
@@ -219,7 +212,5 @@ commonFunction.ifTimerExists = function (timers) {
 }
 
 //===================================公共方法区  end=====================================
-
-
 
 module.exports = commonFunction;

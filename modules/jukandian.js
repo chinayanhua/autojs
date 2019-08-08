@@ -2,6 +2,8 @@ var module_jukandian = {};
 
 var commonFunction;
 
+var mainPageId = "我的";
+
 //选择要启动的模块
 var firstPage_option = "看点"; //首页文章区
 var video_option = "视频";
@@ -75,7 +77,7 @@ function scanArticle() {
 
 //选择某一篇文章
 function selectArticle() {
-    clickAwardBtn();
+    // clickAwardBtn();
     //判断当页是否存在可以点击的文章
     if (!id(searchKey).exists()) {
         toastLog("文章不存在，滑动");
@@ -87,7 +89,6 @@ function selectArticle() {
     id(searchKey).find().forEach(function (pos) {
         var posb = pos.bounds();
         if (posb.centerX() > 0 && posb.centerX() < 1000 && posb.centerY() > 400 && posb.centerY() < 1800) {
-            clickAwardBtn();
             // log("该条新闻中心坐标：centerX:" + posb.centerX() + ",centerY:" + posb.centerY());
             click(posb.centerX(), posb.centerY());
             toastLog("点击了文章，准备进入文章！");
@@ -102,15 +103,17 @@ function selectArticle() {
 
 //文章里阅读循环
 function scanSingleArticle() {
-    toastLog(">>>>>>>>>>>开始浏览文章<<<<<<<<<");
-    for (var i = 0; i < scanTime; i++) {
-        clickAwardBtn();
-        toastLog("浏览文章" + i);
-        swipe(device.width / 2, device.height / 2, device.width / 2, device.height / 4, 2000);//下滑
-        sleep(random(2, 4) * 1000);
+    if (commonFunction.ifTimerExists(timers)) {
+        toastLog(">>>>>>>>>>>开始浏览文章<<<<<<<<<");
+        for (var i = 0; i < scanTime; i++) {
+            // clickAwardBtn();
+            toastLog("浏览文章" + i);
+            swipe(device.width / 2, device.height / 2, device.width / 2, device.height / 4, 2000);//下滑
+            sleep(random(2, 4) * 1000);
+        }
+        toastLog(">>>>>>>>>>浏览文章结束<<<<<<<<<<<<");
     }
-    toastLog(">>>>>>>>>>浏览文章结束<<<<<<<<<<<<");
-    back();
+    commonFunction.returnMainPage(mainPageId);
 }
 
 //点击领福袋按钮
@@ -125,7 +128,7 @@ function clickAwardBtn() {
     commonFunction.clickById("icon_home_left_timer_lq");
     sleep(1000);
     commonFunction.clickById("dialog_close");
-
+    sleep(1000);
 }
 
 //=====================================scanVideo===================================

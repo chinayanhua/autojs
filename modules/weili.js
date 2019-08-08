@@ -1,9 +1,9 @@
 var module_weili = {};
 var commonFunction;
 //选择要启动的模块
-var firstPage_option = "头条"; //首页文章区
+var firstPage_option = "头条";
 var video_option = "视频";
-var options = [firstPage_option, video_option];  //可以选择的模块
+var options = [firstPage_option, video_option]; 
 
 //文章金币计时器id
 var articleId = "iv_coin";
@@ -17,6 +17,9 @@ var scanTime = 10;
 
 //首页阅读福利领取
 var readAwardId = "text_open";
+//阅读时间提醒
+var readTimeNoticeId = "text_ok";
+var readTimeBtnId = "bt_ok";
 
 //==============================程序启动区=======================================
 module_weili.start = function (common) {
@@ -30,14 +33,11 @@ module_weili.start_random = function (common) {
 //=====================================selectModule start===================================
 //选择模块
 function selectModule() {
-    //选择ui
     var indexOption = dialogs.select("请选择一个模块", options);
-    //取消了选择
     if (indexOption < 0) {
         toast("您取消了选择");
         exit();
     }
-    //选择了某一项
     toast("您选择的是" + options[indexOption]);
     if (options[indexOption] == firstPage_option) {
         scanArticle();
@@ -53,7 +53,6 @@ function scanArticle() {
     if (textEndsWith(firstPage_option).exists()) {
         commonFunction.clickByText(firstPage_option);
     } else {
-        // toastLog("文章区识别失败，请手动进入");
         alert("请手动点击头条按钮，进入文章区！");
     }
     sleep(3000);
@@ -64,7 +63,7 @@ function scanArticle() {
 
 //选择某一篇文章
 function selectArticle() {
-    commonFunction.clickById(readAwardId);
+    clickAdId();
     //判断当页是否存在可以点击的文章
     if (!textEndsWith(searchKey).exists()) {
         toastLog("文章不存在，滑动");
@@ -93,6 +92,7 @@ function selectArticle() {
 function scanSingleArticle() {
     toastLog(">>>>>>>>>>>开始浏览文章<<<<<<<<<");
     for (var i = 0; i < scanTime; i++) {
+        clickAdId();
         toastLog("浏览文章" + i);
         swipe(device.width / 2, device.height / 2, device.width / 2, device.height / 4, 2000);//下滑
         sleep(random(2, 5) * 1000);
@@ -100,6 +100,12 @@ function scanSingleArticle() {
     toastLog(">>>>>>>>>>浏览文章结束<<<<<<<<<<<<");
     //退回主页
     back();
+}
+
+function clickAdId(){
+    commonFunction.clickById(readAwardId);
+    commonFunction.clickById(readTimeNoticeId);
+    commonFunction.clickById(readTimeBtnId);
 }
 
 //=====================================scanVideo===================================

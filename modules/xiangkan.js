@@ -66,6 +66,7 @@ function scanArticle() {
 
 //选择某一篇文章
 function selectArticle() {
+    clickMoreMinuteBtn();
     //判断当页是否存在可以点击的文章
     if (!textEndsWith(searchKey).exists()) {
         toastLog("文章不存在，滑动");
@@ -75,7 +76,6 @@ function selectArticle() {
     //遍历点击文章
     toastLog(">>>>>>>>>>>当页开始<<<<<<<<<");
     textEndsWith(searchKey).find().forEach(function (pos) {
-        clickMoreMinuteBtn();
         sleep(1000);
         var posb = pos.bounds();
         if (posb.centerX() > 0 && posb.centerX() < 1000 && posb.centerY() > 400 && posb.centerY() < 1800) {
