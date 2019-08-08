@@ -16,6 +16,9 @@ var adY = 125;
 //计时器id名称
 var timerName = "counting_img";
 
+//首页红包
+var readAwardId = "energy_open";
+
 //==============================程序启动区=======================================
 //程序主入口
 module_souhuzixun.start = function (common) {
@@ -47,6 +50,7 @@ module_souhuzixun.start_random = function (common) {
 
 //选择某一篇文章
 function selectArticle() {
+    commonFunction.clickById(readAwardId);
     if (!id(searchKey_articleTime).exists()) {
         //不存在，滑动
         log("当页不存在可点击的文章，滑动");
@@ -79,7 +83,7 @@ function scanSingleArticle() {
             }
             toastLog("浏览文章" + i);
             swipe(device.width / 2, device.height / 2, device.width / 2, device.height / 4, 2000);//下滑
-            sleep(random(2, 5) * 1000);
+            sleep(random(2, 4) * 1000);
         }
     }
     toastLog(">>>>>>>>>>浏览文章结束<<<<<<<<<<<<");
