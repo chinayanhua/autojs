@@ -10,11 +10,13 @@ var module_jukandian = require('modules/jukandian.js');
 var module_xiangkan = require('modules/xiangkan.js');
 var module_weili = require('modules/weili.js');
 var module_zhongqingkandian = require('modules/zhongqingkandian.js');
+var module_diandianxinwen = require('modules/diandianxinwen.js');
 // var module_qutoutiao = require('modules/qutoutiao.js');
 //各app模块
 var moduleNameArray = [module_zhifubao, module_shandianhezi,
     module_souhuzixun, module_shuabaoduanshipin, module_huitoutiao,
-    module_jukandian, module_xiangkan, module_weili, module_zhongqingkandian];
+    module_jukandian, module_xiangkan, module_weili, module_zhongqingkandian,
+    module_diandianxinwen];
 
 //============================== 全局变量=======================================
 
@@ -28,11 +30,13 @@ var appName_jukandian = "聚看点";
 var appName_xiangkan = "想看";
 var appName_weili = "微鲤";
 var appName_zhongqingkandian = "中青看点";
+var appName_diandianxinwen = "点点新闻";
 // var appName_qutoutiao = "趣头条";
 //可以选择的模块
-var appNameArray = [appName_zhifubao, appName_shandianhezi,
-    appName_souhuzixun, appName_shuabaoduanshipin, appName_huitoutiao,
-    appName_jukandian, appName_xiangkan, appName_weili, appName_zhongqingkandian, "随机应用"];
+var appNameArray = [appName_zhifubao,
+    appName_shandianhezi,appName_souhuzixun, appName_shuabaoduanshipin, appName_huitoutiao,
+    appName_jukandian, appName_xiangkan, appName_weili, appName_zhongqingkandian, appName_diandianxinwen,
+    "随机应用"];
 
 //打开软件等待时间，单位秒
 var waitTime = 7;
