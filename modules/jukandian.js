@@ -10,6 +10,7 @@ var video_option = "视频";
 var options = [firstPage_option, video_option];  //可以选择的模块
 
 //启动首页的广告关闭按钮
+var signCloseBtnId = "v2_sign_close_button";
 var adCloseBtnId = "image_user_task_pop_close";
 
 //文章定位点
@@ -77,6 +78,8 @@ function scanArticle() {
 
 //选择某一篇文章
 function selectArticle() {
+    commonFunction.clickById(signCloseBtnId);
+    commonFunction.clickById(adCloseBtnId);
     // clickAwardBtn();
     //判断当页是否存在可以点击的文章
     if (!id(searchKey).exists()) {
@@ -124,7 +127,7 @@ function clickAwardBtn() {
     commonFunction.clickByText("忽略");
     commonFunction.clickById("cancel_quit");
     commonFunction.clickById("dismisstv");
-    commonFunction.clickById(adCloseBtnId);
+    
     commonFunction.clickById("icon_home_left_timer_lq");
     sleep(1000);
     commonFunction.clickById("dialog_close");
