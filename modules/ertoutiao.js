@@ -1,18 +1,18 @@
 var module_ertoutiao = {};
 var commonFunction;
-
 //选择要启动的模块
-var firstPage_option = "首页"; 
+var firstPage_option = "首页";
 var video_option = "视频";
-var options = [firstPage_option, video_option]; 
-
+var fiction_option = "小说";
+var options = [firstPage_option, video_option, fiction_option];
 //文章定位点：新闻来源
-var searchKey = "tv_item_homeChildContent_source";  
+var searchKey = "tv_item_homeChildContent_source";
 //浏览次数
 var scanTime = 10;
 //视频播放id
 var videoButton = "vw_item_videoChildContent_frame";
-
+//小说页面id
+var fictionPageId = "read_pv_page";
 //==============================程序启动区=======================================
 module_ertoutiao.start = function (common) {
     commonFunction = common;
@@ -39,9 +39,10 @@ function selectModule() {
         scanArticle();
     } else if (options[indexOption] == video_option) {
         scanVideo();
+    } else if (options[indexOption] == fiction_option) {
+        scanFiction();
     }
 }
-
 //=====================================scanArticle start===================================
 //浏览文章
 function scanArticle() {
@@ -73,7 +74,6 @@ function selectArticle() {
     toastLog("当页浏览结束！");
     swipe(device.width / 2, device.height / 4 * 3, device.width / 2, device.height / 4, 2000);//下滑
 }
-
 //文章里阅读循环
 function scanSingleArticle() {
     toastLog(">>>>>>>>>>>开始浏览文章<<<<<<<<<");
@@ -85,10 +85,10 @@ function scanSingleArticle() {
     toastLog(">>>>>>>>>>浏览文章结束<<<<<<<<<<<<");
     back();
 }
-
-
 //=====================================scanVideo===================================
-
+/**
+ * 浏览视频
+ */
 function scanVideo() {
     if (!textEndsWith(video_option).exists()) {
         alert("请手动点视频按钮！");
@@ -115,6 +115,24 @@ function scanVideo() {
         swipe(device.width / 2, device.height / 4 * 3, device.width / 2, device.height / 4, 2000);//下滑
     }
 }
-
+//=====================================scanFiction===================================
+/**
+ * 浏览小说
+ */
+function scanFiction() {
+    alert("请手动进入一篇小说阅读！");
+    sleep(3000);
+    //判断当页是否存在可以点击的文章
+    if (!id(fictionPageId).exists()) {
+        toastLog("未进入小说，等待");
+        sleep(2000);
+        return;
+    }
+    toastLog("已进入小说页面");
+    while (true) {
+        click(device.width / 5 * 4, device.height / 4 * 3);
+        sleep(random(1, 3) * 1000);
+    }
+}
 //=====================================end===================================
 module.exports = module_ertoutiao;
