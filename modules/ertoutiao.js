@@ -1,25 +1,25 @@
-var module_diandianxinwen = {};
+var module_ertoutiao = {};
 var commonFunction;
 
 //选择要启动的模块
-var firstPage_option = "首页"; //首页文章区
+var firstPage_option = "首页"; 
 var video_option = "视频";
-var options = [firstPage_option, video_option];  //可以选择的模块
+var options = [firstPage_option, video_option]; 
 
-//文章定位点：第二张图片id，一般广告就一张图片
-var searchKey = "image_1";  
+//文章定位点：新闻来源
+var searchKey = "tv_item_homeChildContent_source";  
 //浏览次数
-var scanTime = 8;
+var scanTime = 10;
 //视频播放id
-var videoButton = "iv_video_start";
+var videoButton = "vw_item_videoChildContent_frame";
 
 //==============================程序启动区=======================================
-module_diandianxinwen.start = function (common) {
+module_ertoutiao.start = function (common) {
     commonFunction = common;
     //选择模块
     selectModule();
 }
-module_diandianxinwen.start_random = function (common) {
+module_ertoutiao.start_random = function (common) {
     commonFunction = common;
     selectArticle();
 }
@@ -45,7 +45,6 @@ function selectModule() {
 //=====================================scanArticle start===================================
 //浏览文章
 function scanArticle() {
-    // commonFunction.clickByText(firstPage_option);
     sleep(2000);
     while (true) {
         selectArticle();
@@ -85,7 +84,6 @@ function scanSingleArticle() {
     }
     toastLog(">>>>>>>>>>浏览文章结束<<<<<<<<<<<<");
     back();
-    // commonFunction.returnMainPage(mainPageId);
 }
 
 
@@ -119,4 +117,4 @@ function scanVideo() {
 }
 
 //=====================================end===================================
-module.exports = module_diandianxinwen;
+module.exports = module_ertoutiao;
